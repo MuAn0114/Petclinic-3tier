@@ -32,7 +32,7 @@
           <div class="field full"><label for="memo">요청사항</label><textarea id="memo" name="memo" maxlength="500" placeholder="알레르기, 미용 시 주의할 점을 적어주세요."></textarea></div>
         </div><button class="btn submit" id="submit" type="submit">예약 신청하기</button><p class="notice" id="notice" role="status"></p></form>
       </div>
-      <aside class="card"><h2>최근 예약</h2><p class="sub">접수된 예약 내역을 확인할 수 있어요.</p><div id="bookings" aria-live="polite"><div class="empty">예약 내역을 불러오는 중...</div></div></aside>
+      <aside class="card"><h2>예약 검색</h2><p class="sub">날짜 또는 보호자·반려동물 이름으로 예약을 찾아보세요.</p><form id="search-form"><div class="grid"><div class="field"><label for="search-date">예약 날짜</label><input id="search-date" type="date"></div><div class="field"><label for="search-name">이름</label><input id="search-name" maxlength="60" placeholder="보호자 또는 반려동물 이름"></div></div><button class="btn submit" type="submit">예약 검색</button></form><div id="bookings" aria-live="polite"><div class="empty">검색 조건을 입력하고 검색해주세요.</div></div></aside>
     </section>
   </main>
   <footer>두룹 살롱 · 예약 신청 후 매장에서 연락드려 시간을 확정해요.</footer>
@@ -40,9 +40,9 @@
     const form=document.getElementById('booking-form'), notice=document.getElementById('notice'), list=document.getElementById('bookings'), submit=document.getElementById('submit');
     const dateInput=document.getElementById('date'); dateInput.min=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
     function safe(value){const el=document.createElement('span');el.textContent=value||'';return el.innerHTML;}
-    async function loadBookings(){try{const r=await fetch('/api/grooming/bookings');if(!r.ok)throw new Error();const rows=await r.json();if(!rows.length){list.innerHTML='<div class="empty">아직 등록된 예약이 없습니다.</div>';return;}list.innerHTML=rows.map(b=>`<div class="booking"><strong>${safe(b.guardianName)} · ${safe(b.service)}</strong><span>반려동물 ${safe(b.petName)} · ${safe(b.preferredDate)} ${safe(b.preferredTime)} · ${safe(b.status)}</span></div>`).join('');}catch(e){list.innerHTML='<div class="empty">예약 목록을 불러오지 못했습니다.</div>';}}
+    async function loadBookings(){const date=document.getElementById('search-date').value;const name=document.getElementById('search-name').value.trim();if(!date&&!name){list.innerHTML='<div class="empty">날짜 또는 이름을 입력해주세요.</div>';return;}try{const query=new URLSearchParams();if(date)query.set('date',date);if(name)query.set('name',name);const r=await fetch('/api/grooming/bookings?'+query);const result=await r.json().catch(()=>[]);if(!r.ok)throw new Error(result.message||'예약 검색에 실패했습니다.');if(!result.length){list.innerHTML='<div class="empty">조건에 맞는 예약이 없습니다.</div>';return;}list.innerHTML=result.map(b=>`<div class="booking"><strong>${safe(b.guardianName)} · ${safe(b.service)}</strong><span>반려동물 ${safe(b.petName)} · ${safe(b.preferredDate)} ${safe(b.preferredTime)} · ${safe(b.status)}</span></div>`).join('');}catch(e){list.innerHTML='<div class="empty">${safe(e.message)}</div>';}}
     form.addEventListener('submit',async e=>{e.preventDefault();notice.className='notice';notice.textContent='';submit.disabled=true;submit.textContent='저장 중...';const data=Object.fromEntries(new FormData(form).entries());try{const r=await fetch('/api/grooming/bookings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});const result=await r.json().catch(()=>({}));if(!r.ok)throw new Error(result.message||'예약을 저장하지 못했습니다. 입력 내용을 확인해주세요.');notice.className='notice ok';notice.textContent='예약이 접수됐어요. 매장에서 확인 후 연락드릴게요.';form.reset();dateInput.min=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);await loadBookings();}catch(err){notice.className='notice error';notice.textContent=err.message;}finally{submit.disabled=false;submit.textContent='예약 신청하기';}});
-    loadBookings();
+    document.getElementById('search-form').addEventListener('submit',e=>{e.preventDefault();loadBookings();});
   </script>
 </body>
 </html>

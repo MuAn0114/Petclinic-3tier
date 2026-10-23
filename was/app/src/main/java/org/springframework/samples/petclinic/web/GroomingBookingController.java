@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -31,11 +32,37 @@ public class GroomingBookingController {
     }
 
     @GetMapping
-    public List<Map<String, Object>> list() {
-        return jdbcTemplate.queryForList(
+    public ResponseEntity<?> list(
+            @RequestParam(value = "date", required = false) String date,
+            @RequestParam(value = "name", required = false) String name) {
+        String searchDate = emptyToNull(date);
+        String searchName = emptyToNull(name);
+        if (searchDate != null) {
+            try {
+                LocalDate.parse(searchDate);
+            } catch (DateTimeParseException ex) {
+                Map<String, String> response = new HashMap<>();
+                response.put("message", "검색 날짜를 확인해주세요.");
+                return ResponseEntity.badRequest().body(response);
+            }
+        }
+        StringBuilder sql = new StringBuilder(
             "SELECT id, guardian_name AS guardianName, pet_name AS petName, service, DATE_FORMAT(preferred_at, '%Y-%m-%d') AS preferredDate, " +
             "DATE_FORMAT(preferred_at, '%H:%i') AS preferredTime, status " +
-            "FROM grooming_bookings ORDER BY preferred_at DESC LIMIT 50");
+            "FROM grooming_bookings WHERE 1=1");
+        List<Object> params = new java.util.ArrayList<>();
+        if (searchDate != null) {
+            sql.append(" AND DATE(preferred_at) = ?");
+            params.add(searchDate);
+        }
+        if (searchName != null) {
+            sql.append(" AND (guardian_name LIKE ? OR pet_name LIKE ?)");
+            String pattern = "%" + searchName + "%";
+            params.add(pattern);
+            params.add(pattern);
+        }
+        sql.append(" ORDER BY preferred_at ASC LIMIT 50");
+        return ResponseEntity.ok(jdbcTemplate.queryForList(sql.toString(), params.toArray()));
     }
 
     @PostMapping
