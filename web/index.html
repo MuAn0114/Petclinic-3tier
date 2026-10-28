@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f4ee">
+  <title>두룹 살롱 | 반려동물 미용 예약</title>
+  <style>
+    :root{--ink:#26352d;--muted:#718078;--green:#315c48;--mint:#e6efe8;--cream:#f6f4ee;--line:#e4e7df;--orange:#e89055}
+    *{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:Arial,"Malgun Gothic",sans-serif;line-height:1.5}
+    .top{padding:20px max(24px,calc((100% - 1120px)/2));display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);background:#fff}.brand{font-weight:800;font-size:20px;color:var(--green)}.brand span{color:var(--orange)}.top small{color:var(--muted)}
+    main{max-width:1120px;margin:52px auto;padding:0 24px}.hero{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center;margin-bottom:40px}.eyebrow{color:#bc7040;font-weight:700;letter-spacing:.12em;font-size:12px}.hero h1{font-size:clamp(34px,5vw,54px);line-height:1.16;margin:12px 0 16px}.hero p{color:var(--muted);font-size:17px;margin:0}.hero-art{min-height:210px;border-radius:28px;background:linear-gradient(135deg,#dce9dc,#f2dfc8);display:grid;place-items:center;font-size:86px}
+    .layout{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:start}.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:0 12px 34px #314b3810}.card h2{font-size:21px;margin:0 0 5px}.sub{color:var(--muted);font-size:14px;margin:0 0 22px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.field{display:flex;flex-direction:column;gap:7px}.field.full{grid-column:1/-1}label{font-size:13px;font-weight:700}input,select,textarea{border:1px solid #dce2db;border-radius:10px;padding:12px 13px;font:inherit;color:var(--ink);background:white;min-width:0}input:focus,select:focus,textarea:focus{outline:2px solid #9fbea8;border-color:transparent}textarea{resize:vertical;min-height:82px}.btn{border:0;border-radius:11px;padding:14px 18px;background:var(--green);color:white;font:inherit;font-weight:700;cursor:pointer}.btn:hover{background:#254736}.submit{width:100%;margin-top:19px}.notice{min-height:24px;margin:11px 0 0;font-size:14px}.notice.ok{color:#26734b}.notice.error{color:#b33d32}.services{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.chip{background:var(--mint);border-radius:999px;padding:7px 11px;font-size:12px;color:var(--green);font-weight:700}.booking{padding:14px 0;border-bottom:1px solid var(--line)}.booking:last-child{border:0}.booking strong{display:block}.booking span{color:var(--muted);font-size:13px}.empty{color:var(--muted);font-size:14px;padding:14px 0}footer{text-align:center;color:var(--muted);font-size:12px;padding:36px 24px}
+    @media(max-width:760px){main{margin:32px auto}.hero,.layout{grid-template-columns:1fr}.hero{gap:20px}.hero-art{min-height:150px;font-size:65px}.grid{grid-template-columns:1fr}.field.full{grid-column:auto}.top small{display:none}.card{padding:22px}}
+  </style>
+</head>
+<body>
+  <header class="top"><div class="brand">두룹 <span>살롱</span></div><small>반려동물과 보호자가 함께 편안한 미용 시간</small></header>
+  <main>
+    <section class="hero"><div><div class="eyebrow">GROOMING RESERVATION</div><h1>우리 아이에게<br>포근한 하루를</h1><p>아이의 성격과 털 상태에 맞춰 정성껏 케어해요.<br>원하는 날짜와 메뉴를 골라 예약을 남겨주세요.</p><div class="services"><span class="chip">소형견 목욕 30,000원~</span><span class="chip">전체 미용 55,000원~</span><span class="chip">고양이 케어 60,000원~</span></div></div><div class="hero-art" aria-hidden="true">🐶 🫧 🐱</div></section>
+    <section class="layout">
+      <div class="card"><h2>미용 예약하기</h2><p class="sub">예약 확인을 위해 보호자 연락처를 정확히 입력해주세요.</p>
+        <form id="booking-form"><div class="grid">
+          <div class="field"><label for="guardian">보호자 이름</label><input id="guardian" name="guardianName" required maxlength="60" placeholder="홍길동"></div>
+          <div class="field"><label for="phone">연락처</label><input id="phone" name="phone" required maxlength="30" type="tel" placeholder="010-1234-5678"></div>
+          <div class="field"><label for="pet">반려동물 이름</label><input id="pet" name="petName" required maxlength="60" placeholder="두부"></div>
+          <div class="field"><label for="type">동물 종류</label><select id="type" name="petType" required><option value="">선택해주세요</option><option>강아지</option><option>고양이</option><option>기타</option></select></div>
+          <div class="field"><label for="service">미용 메뉴</label><select id="service" name="service" required><option value="">메뉴를 선택해주세요</option><option>목욕</option><option>부분 미용</option><option>전체 미용</option><option>고양이 케어</option><option>상담 후 결정</option></select></div>
+          <div class="field"><label for="size">몸무게</label><select id="size" name="petWeight"><option value="">선택사항</option><option>5kg 미만</option><option>5~10kg</option><option>10~20kg</option><option>20kg 이상</option></select></div>
+          <div class="field"><label for="date">희망 날짜</label><input id="date" name="preferredDate" type="date" required></div>
+          <div class="field"><label for="time">희망 시간</label><select id="time" name="preferredTime" required><option value="">시간 선택</option><option>10:00</option><option>11:00</option><option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option></select></div>
+          <div class="field full"><label for="memo">요청사항</label><textarea id="memo" name="memo" maxlength="500" placeholder="알레르기, 미용 시 주의할 점을 적어주세요."></textarea></div>
+        </div><button class="btn submit" id="submit" type="submit">예약 신청하기</button><p class="notice" id="notice" role="status"></p></form>
+      </div>
+      <aside class="card"><h2>예약 검색</h2><p class="sub">날짜 또는 보호자·반려동물 이름으로 예약을 찾아보세요.</p><form id="search-form"><div class="grid"><div class="field"><label for="search-date">예약 날짜</label><input id="search-date" type="date"></div><div class="field"><label for="search-name">이름</label><input id="search-name" maxlength="60" placeholder="보호자 또는 반려동물 이름"></div></div><button class="btn submit" type="submit">예약 검색</button></form><div id="bookings" aria-live="polite"><div class="empty">검색 조건을 입력하고 검색해주세요.</div></div></aside>
+    </section>
+  </main>
+  <footer>두룹 살롱 · 예약 신청 후 매장에서 연락드려 시간을 확정해요.</footer>
+  <script>
+    const form=document.getElementById('booking-form'), notice=document.getElementById('notice'), list=document.getElementById('bookings'), submit=document.getElementById('submit');
+    const dateInput=document.getElementById('date'); dateInput.min=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
+    function safe(value){const el=document.createElement('span');el.textContent=value||'';return el.innerHTML;}
+    async function loadBookings(){const date=document.getElementById('search-date').value;const name=document.getElementById('search-name').value.trim();if(!date&&!name){list.innerHTML='<div class="empty">날짜 또는 이름을 입력해주세요.</div>';return;}try{const query=new URLSearchParams();if(date)query.set('date',date);if(name)query.set('name',name);const r=await fetch('/api/grooming/bookings?'+query);const result=await r.json().catch(()=>[]);if(!r.ok)throw new Error(result.message||'예약 검색에 실패했습니다.');if(!result.length){list.innerHTML='<div class="empty">조건에 맞는 예약이 없습니다.</div>';return;}list.innerHTML=result.map(b=>`<div class="booking"><strong>${safe(b.guardianName)} · ${safe(b.service)}</strong><span>반려동물 ${safe(b.petName)} · ${safe(b.preferredDate)} ${safe(b.preferredTime)} · ${safe(b.status)}</span></div>`).join('');}catch(e){list.innerHTML='<div class="empty">${safe(e.message)}</div>';}}
+    form.addEventListener('submit',async e=>{e.preventDefault();notice.className='notice';notice.textContent='';submit.disabled=true;submit.textContent='저장 중...';const data=Object.fromEntries(new FormData(form).entries());try{const r=await fetch('/api/grooming/bookings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});const result=await r.json().catch(()=>({}));if(!r.ok)throw new Error(result.message||'예약을 저장하지 못했습니다. 입력 내용을 확인해주세요.');notice.className='notice ok';notice.textContent='예약이 접수됐어요. 매장에서 확인 후 연락드릴게요.';form.reset();dateInput.min=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);await loadBookings();}catch(err){notice.className='notice error';notice.textContent=err.message;}finally{submit.disabled=false;submit.textContent='예약 신청하기';}});
+    document.getElementById('search-form').addEventListener('submit',e=>{e.preventDefault();loadBookings();});
+  </script>
+</body>
+</html>
+
+
