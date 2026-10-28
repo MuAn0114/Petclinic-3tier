@@ -33,7 +33,14 @@
           p:driverClassName="com.mysql.cj.jdbc.Driver"
           p:url="#{keyVaultConfig.jdbcUrl}"
           p:username="#{keyVaultConfig.dbUsername}"
-          p:password="#{keyVaultConfig.dbPassword}"/>
+          p:password="#{keyVaultConfig.dbPassword}"
+          p:testOnBorrow="true"
+          p:validationQuery="SELECT 1"
+          p:validationQueryTimeout="5"
+          p:validationInterval="30000"
+          p:timeBetweenEvictionRunsMillis="30000"
+          p:maxAge="1800000"
+          p:minEvictableIdleTimeMillis="60000"/>
 
     <!-- Shared JDBC access for the grooming booking API. -->
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
